@@ -1,0 +1,145 @@
+openapi: '3.0.3'
+info:
+  version: 1.0.0
+  title: Location Tracker API
+servers:
+  - url: http://localhost:3000
+paths:
+  /places:
+    get:
+      tags:
+        - Places
+      description: Get a list of places user owns
+      responses:
+        200:
+          description: A list of places
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Place'
+    post:
+      tags:
+        - Places
+      description: Add place
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceChange'
+      responses:
+        201:
+          description: Place added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Place'
+  /places/{placeId}:
+    parameters:
+      - name: placeId
+        description: Place id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    get:
+      tags:
+        - Places
+      description: Get a place by id
+      responses:
+        200:
+          description: Place info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Place'
+        404:
+          $ref: '#/components/responses/PlaceNotFound'
+    delete:
+      tags:
+        - Places
+      description: Remove a places
+      responses:
+        204:
+          description: Places deleted
+        404:
+          $ref: '#/components/responses/PlaceNotFound'
+    patch:
+      tags:
+        - Places
+      description: Update a place
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceChange'
+      responses:
+        202:
+          description: Place updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Place'
+        404:
+          $ref: '#/components/responses/PlaceNotFound'
+components:
+  schemas:
+    Place:
+      description: Place
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Place id
+        description:
+          type: string
+          description: Place description
+        latitude:
+          type: string
+          description: Encoded location latitude
+        longitude:
+          type: string
+          description: Encoded location longitude
+    PlaceChange:
+      description: Place
+      type: object
+      properties:
+        description:
+          type: string
+          description: Place description
+        latitude:
+          type: string
+          description: Encoded location latitude
+        longitude:
+          type: string
+          description: Encoded location longitude
+    Error:
+      description: Error
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+          maxLength: 128
+        message:
+          type: string
+          description: Error message
+  responses:
+    PlaceNotFound:
+      description: Place not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            0:
+              $ref: '#/components/examples/PlaceNotFound'
+  examples:
+    PlaceNotFound:
+      description: Place not found
+      value:
+        code: PLACE_NOT_FOUND
+        message: 'Place with id {id} not found in group {id}'
