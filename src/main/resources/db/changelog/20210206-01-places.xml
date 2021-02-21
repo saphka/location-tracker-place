@@ -4,8 +4,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
-    <changeSet id="20210206-01-places" author="saphka">
-        <createTable tableName="places">
+    <changeSet id="20210206-01-place" author="saphka">
+        <createTable tableName="place">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -22,7 +22,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createIndex tableName="places" indexName="places_owner_id_index">
+        <createIndex tableName="place" indexName="place_owner_id_index">
             <column name="owner_id"/>
         </createIndex>
     </changeSet>

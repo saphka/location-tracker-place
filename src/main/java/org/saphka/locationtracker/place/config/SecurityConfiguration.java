@@ -16,8 +16,6 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http.csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/users/auth").permitAll()
-                .pathMatchers("/users/register").permitAll()
                 .anyExchange().authenticated()
                 .and()
                 .build();
